@@ -1,0 +1,32 @@
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Secrets and local environment
+.env
+.env.*
+!.env.example
+
+# Spark runtime state
+spark/checkpoints/
+spark/spark-warehouse/
+
+# Logs
+*.log
+logs/
+
+# Airflow runtime files
+airflow/logs/
+
+# IDE and operating system
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp

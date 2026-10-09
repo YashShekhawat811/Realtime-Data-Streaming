@@ -1,0 +1,40 @@
+------ Start Spark Sttreaming 
+
+docker exec -it spark-master `
+  /opt/spark/bin/spark-submit `
+  --master spark://spark-master:7077 `
+  --conf spark.jars.ivy=/tmp/.ivy2 `
+  --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.5,com.datastax.spark:spark-cassandra-connector_2.12:3.5.1 `
+  --conf spark.cassandra.connection.host=cassandra `
+  --conf spark.cassandra.connection.port=9042 `
+  /opt/spark/work-dir/spark_stream.py
+
+
+  -------verify cassandra 
+
+  docker exec cassandra cqlsh -e "SELECT COUNT(*) FROM spark_streams.created_users;"
+
+  docker exec cassandra cqlsh -e "SELECT first_name, last_name, email, username FROM spark_streams.created_users LIMIT 10;"
+
+  --- localhosts
+
+Service 	                        Local URL	                        Port
+Apache Airflow UI / API server	    http://localhost:8080	            8080
+Spark Master UI	                    http://localhost:9090	            9090
+Kafka	                            localhost:9092	                    9092
+Schema Registry	                    http://localhost:8081	            8081
+Confluent Control Center	        http://localhost:9021	            9021
+Cassandra	                        localhost:9042	                    9042
+ZooKeeper	                        localhost:2181	                    2181
+Spark Master connection	            spark://localhost:7077   	        7077
+
+
+-- address b/w docker containers
+
+Kafka	            kafka:9092	                    9092
+ZooKeeper	        zookeeper:2181	                2181
+Schema Registry	    http://schema-registry:8081	    8081
+Cassandra	        cassandra:9042	                9042
+Spark Master	    spark://spark-master:7077	    7077
+Spark Master UI	    http://spark-master:8080	    8080
+Airflow UI	        http://airflow-apiserver:8080*	8080
